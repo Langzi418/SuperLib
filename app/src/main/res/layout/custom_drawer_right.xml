@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="@string/search"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/search_type"
+            style="?android:listSeparatorTextViewStyle"/>
+        <Spinner
+            android:id="@+id/search_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:dropDownVerticalOffset="40dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/doc_type"
+            style="?android:listSeparatorTextViewStyle"/>
+        <Spinner
+            android:id="@+id/doc_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:dropDownVerticalOffset="40dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/displaypg"
+            style="?android:listSeparatorTextViewStyle"/>
+        <Spinner
+            android:id="@+id/display_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:dropDownVerticalOffset="40dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sort"
+        style="?android:listSeparatorTextViewStyle"/>
+    <Spinner
+        android:id="@+id/sort_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:dropDownVerticalOffset="40dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/asc_des"
+            style="?android:listSeparatorTextViewStyle"/>
+        <Spinner
+            android:id="@+id/asc_or_des_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:dropDownVerticalOffset="40dp"/>
+    </LinearLayout>
+
+
+</LinearLayout>

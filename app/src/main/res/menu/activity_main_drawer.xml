@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_search"
+            android:title="@string/search"/>
+        <item android:id="@+id/nav_change"
+            android:icon="@drawable/ic_change"
+            android:title="@string/change_account"/>
+    </group>
+    <item android:title="@string/mine">
+        <menu>
+            <item
+                android:id="@+id/nav_mylib"
+                android:icon="@drawable/ic_mine"
+                android:title="@string/my_lib"/>
+            <item
+                android:id="@+id/nav_collection"
+                android:icon="@drawable/ic_collection"
+                android:title="@string/collection"/>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_about"
+        android:title="@string/about"/>
+</menu>

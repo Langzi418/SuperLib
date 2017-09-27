@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">超级图书馆</string>
+    <string name="load_data">加载中</string>
+
+    <!--spinner-->
+    <string name="search_type">检索词类型</string>
+    <string name="search_name">题名</string>
+    <string name="search_author">作者</string>
+    <string name="search_theme">主题词</string>
+    <string name="search_isbn">ISBN/ISSN</string>
+
+    <string name="doc_all">所有</string>
+    <string name="doc_chinese_book">中文图书</string>
+    <string name="doc_foreign_book">西文图书</string>
+    <string name="doc_chinese_journal">中文期刊</string>
+    <string name="doc_foreign_journal">西文期刊</string>
+
+    <string name="sort_date">入藏日期</string>
+    <string name="sort_publish">出版社</string>
+    <string name="sort_publish_date">出版日期</string>
+
+    <string name="desc">降序</string>
+    <string name="asc">升序</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hot_search">热门检索</string>
+    <string name="hot_book">热门图书</string>
+    <string name="previous_page">上一页</string>
+    <string name="next_page">下一页</string>
+    <string name="search_result">搜索结果</string>
+    <string name="book_status">书籍状态</string>
+    <string name="school_comment">校内评论</string>
+    <string name="search">检索条件</string>
+    <string name="mine">我的</string>
+    <string name="my_lib">我的图书馆</string>
+    <string name="collection">我的收藏</string>
+    <string name="no_data">暂无数据</string>
+    <string name="dou_ban_comment">豆瓣评论</string>
+    <string name="student_no">学号</string>
+    <string name="password">密码</string>
+    <string name="login">登录</string>
+    <string name="zjxx">证件信息</string>
+    <string name="dqjy">当前借阅</string>
+    <string name="jyls">借阅历史</string>
+    <string name="click_login">请点击登录</string>
+    <string name="create_comment">新建评论</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="no_content">亲，只字未写！</string>
+    <string name="please_login">请先登录后，使用该功能</string>
+    <string name="change_account">切换账号</string>
+    <string name="notice_detail">公告详情</string>
+    <string name="page_views">浏览量 %1$s</string>
+    <string name="renew">续借</string>
+    <string name="renew_hint">
+         "%1$s\n\n
+        友情提示：\n
+        最大提前续借天数：15\n
+        最大网上续借量：1"
+    </string>
+    <string name="lend_date">借书日期：%1$s</string>
+    <string name="return_date">还书日期： %1$s</string>
+    <string name="comment_detail">评论详情</string>
+    <string name="back">返回</string>
+    <string name="doc_type">语言及类型</string>
+    <string name="displaypg">每次加载条数</string>
+    <string name="sort">排序方式</string>
+    <string name="asc_des">升序或降序</string>
+    <string name="no_result">亲，搜索的结果不存在。</string>
+    <string name="please_search">亲，搜索一下</string>
+    <string name="input_name">请输入姓名</string>
+    <string name="give_up">放弃</string>
+    <string name="con_fail">认证失败，请重新登录认证。</string>
+    <string name="login_out">注销</string>
+    <string name="check_log_out">亲，确认退出登录？</string>
+    <string name="delete">删除</string>
+    <string name="un_collect">未收藏</string>
+    <string name="comment">评论</string>
+    <string name="collect">已收藏</string>
+    <string name="no_network">亲，网又断了</string>
+    <string name="dou_comment_cnt">豆瓣长评（%1$d）</string>
+    <string name="version_name">发现新版本：%1$s ,请升级。</string>
+    <string name="version_size">新版本大小：%1$s</string>
+    <string name="about">关于</string>
+    <string name="update">有新版本更新</string>
+    <string name="no_update">当前版本是最新版本</string>
+    <string name="app_info">应用信息</string>
+    <string name="change_college">切换学校</string>
+    <string name="choose_college">选择学校</string>
+    <string name="college_ok">您确定选择 %1$s ？ 为避免被查水表，选择后将无法更改。</string>
+    <string name="account">账号</string>
+    <string name="cert_no">证件号</string>
+    <string name="bar_no">条码号</string>
+    <string name="email">Email</string>
+</resources>

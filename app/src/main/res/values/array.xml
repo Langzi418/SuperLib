@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="searchType">
+        <item>@string/search_name</item>
+        <item>@string/search_author</item>
+        <item>@string/search_theme</item>
+        <item>@string/search_isbn</item>
+    </string-array>
+
+    <string-array name="docType">
+        <item>@string/doc_all</item>
+        <item>@string/doc_chinese_book</item>
+        <item>@string/doc_foreign_book</item>
+        <item>@string/doc_chinese_journal</item>
+        <item>@string/doc_foreign_journal</item>
+    </string-array>
+
+    <string-array name="display">
+        <item>20</item>
+        <item>30</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="sort">
+        <item>@string/sort_date</item>
+        <item>@string/search_name</item>
+        <item>@string/search_author</item>
+        <item>@string/sort_publish</item>
+        <item>@string/sort_publish_date</item>
+    </string-array>
+
+    <string-array name="asc_des">
+        <item>@string/desc</item>
+        <item>@string/asc</item>
+    </string-array>
+
+
+</resources>
