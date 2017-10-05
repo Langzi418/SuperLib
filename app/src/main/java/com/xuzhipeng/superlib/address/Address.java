@@ -1,6 +1,7 @@
 package com.xuzhipeng.superlib.address;
 
 import com.xuzhipeng.superlib.common.app.App;
+import com.xuzhipeng.superlib.common.util.PrefUtil;
 
 /**
  * Author: xuzhipeng
@@ -11,10 +12,18 @@ import com.xuzhipeng.superlib.common.app.App;
 
 public class Address {
 
-//    public static String base;
+    private volatile static String base;
 
-    public static String getBase() {
-        return App.getBaseUrl();
+    private static String getBase(){
+        if(base == null){
+            synchronized (Address.class){
+                if(base == null) {
+                    base = PrefUtil.getBaseUrl(App.getContext());
+                }
+            }
+        }
+
+        return base;
     }
 
     public static String getOpac() {
@@ -40,6 +49,9 @@ public class Address {
     public static String getReaderVerify() {
         return getBase() + "reader/redr_verify.php";
     }
+
+    public static String getCaptcha(){ return getBase()+ "reader/captcha.php";}
+
 
     public static String getReaderConRes() {
         return getBase() + "reader/redr_con_result.php";

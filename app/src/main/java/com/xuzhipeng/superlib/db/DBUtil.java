@@ -1,7 +1,11 @@
 package com.xuzhipeng.superlib.db;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.xuzhipeng.superlib.common.util.PrefUtil;
+
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.List;
@@ -14,46 +18,8 @@ import java.util.List;
  */
 
 public class DBUtil {
-    private static BookDao bookDao;
-    private static UserDao userDao;
-    private static SuggestDao suggestDao;
-    private static CollectDao collectDao;
 
-    private static final String TAG = "MainActivity";
-
-    private static BookDao getBookDao() {
-        if (bookDao == null) {
-            bookDao = DaoManager.getInstance().getBookDao();
-        }
-
-        return bookDao;
-    }
-
-    private static UserDao getUserDao() {
-        if (userDao == null) {
-            userDao = DaoManager.getInstance().getUserDao();
-        }
-
-        return userDao;
-    }
-
-
-    private static SuggestDao getSuggestDao() {
-        if (suggestDao == null) {
-            suggestDao = DaoManager.getInstance().getSuggestDao();
-        }
-
-        return suggestDao;
-    }
-
-    private static CollectDao getCollectDao() {
-        if (collectDao == null) {
-            collectDao = DaoManager.getInstance().getCollectDao();
-        }
-
-        return collectDao;
-    }
-
+    private static final String TAG = "DBUtil";
     /**
      * 关闭数据库
      */
@@ -61,34 +27,55 @@ public class DBUtil {
         DaoManager.getInstance().closeConnection();
     }
 
-
     //用户相关
-    public static long insertUser(User user) {
-        return getUserDao().insert(user);
+    /**
+     * 用户是否插入数据库
+     */
+    public static void checkUserInsert(Context context) {
+        User user = null;
+        UserDao userDao = DaoManager.getInstance().getUserDao();
+        QueryBuilder<User> builder = userDao.queryBuilder();
+        String userNo = PrefUtil.getUserNo(context);
+        try{
+            user = builder.where(UserDao.Properties.StuId.eq(userNo)).build().unique();
+        }catch (DaoException e){
+            e.printStackTrace();
+        }
+
+        if(user == null){
+            //用户不存在
+            user = new User();
+            user.setStuId(userNo);
+            userDao.insert(user);
+        }
+
+        //保存用户数据库id
+        PrefUtil.setUserId(context, user.getId());
+        closeDB();
     }
 
-    public static User queryUserById(Long userId) {
-        return getUserDao().loadByRowId(userId);
-    }
-
-    public static User queryUserByStuNo(String userNo) {
-        QueryBuilder<User> builder = getUserDao().queryBuilder();
-        return builder.where(UserDao.Properties.StuId.eq(userNo)).build().unique();
-    }
 
 
     //书相关
     public static Book queryBookByIsbn(String isbn) {
-        QueryBuilder<Book> builder = getBookDao().queryBuilder();
-        return builder.where(BookDao.Properties.Isbn.eq(isbn)).build().unique();
+        BookDao bookDao = DaoManager.getInstance().getBookDao();
+        QueryBuilder<Book> builder = bookDao.queryBuilder();
+        try{
+            return builder.where(BookDao.Properties.Isbn.eq(isbn)).build().unique();
+        }catch (DaoException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static Long insertBook(Book book) {
-        return getBookDao().insert(book);
+        BookDao bookDao = DaoManager.getInstance().getBookDao();
+        return bookDao.insert(book);
     }
 
-    public static Book queryBookById(long bookId) {
-        return getBookDao().loadByRowId(bookId);
+    public static Book queryBookById(Long bookId) {
+        BookDao bookDao = DaoManager.getInstance().getBookDao();
+        return bookDao.loadByRowId(bookId);
     }
 
 
@@ -96,13 +83,21 @@ public class DBUtil {
 
     //收藏相关
     public static Collect queryCollect(Long userId, Long bookId) {
-        QueryBuilder<Collect> builder = getCollectDao().queryBuilder();
-        return builder.where(CollectDao.Properties.UserId.eq(userId)
+        CollectDao collectDao = DaoManager.getInstance().getCollectDao();
+        QueryBuilder<Collect> builder = collectDao.queryBuilder();
+        try{
+            return builder.where(CollectDao.Properties.UserId.eq(userId)
                 , CollectDao.Properties.BookId.eq(bookId)).build().unique();
+        }catch (DaoException e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static void updateCollect(Collect collect) {
-        getCollectDao().update(collect);
+        CollectDao collectDao = DaoManager.getInstance().getCollectDao();
+        collectDao.update(collect);
     }
 
     //取消收藏
@@ -111,68 +106,69 @@ public class DBUtil {
         updateCollect(collect);
     }
 
-    //通过用户id和bookID 取消收藏
-    public static void unCollect(Long userId,Long bookId) {
-        Collect collect = queryCollect(userId,bookId);
-        unCollect(collect);
-    }
-
     public static void insertCollect(Collect collect) {
-        getCollectDao().insert(collect);
+        CollectDao collectDao = DaoManager.getInstance().getCollectDao();
+        collectDao.insert(collect);
     }
 
     //用户id查询用户收藏
     public static List<Collect> queryUserCollect(Long userId) {
-        QueryBuilder<Collect> builder = getCollectDao().queryBuilder();
+        CollectDao collectDao = DaoManager.getInstance().getCollectDao();
+        QueryBuilder<Collect> builder = collectDao.queryBuilder();
         return builder.where(CollectDao.Properties.UserId.eq(userId)
         ,CollectDao.Properties.Like.eq(1)).build().list();
     }
 
 
+
+
     //建议相关
     public static void insertSuggest(String name) {
-        Suggest sug = ifSuggestExists(name);
-        if (sug == null) {
-            Suggest suggest = new Suggest();
-            suggest.setName(name);
-            suggest.setTimes(1L);
-            getSuggestDao().insert(suggest);
+        SuggestDao suggestDao = DaoManager.getInstance().getSuggestDao();
+        Suggest oldSuggest = null;
+        try {
+            QueryBuilder<Suggest> builder = suggestDao.queryBuilder();
+            oldSuggest =  builder.where(SuggestDao.Properties.Name.eq(name)).unique();
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+
+        if (oldSuggest == null) {
+            Suggest newSuggest = new Suggest();
+            newSuggest.setName(name);
+            newSuggest.setTimes(1L);
+            suggestDao.insert(newSuggest);
         } else {
             //加一
-            sug.setTimes(sug.getTimes() + 1L);
-            updateSuggest(sug);
+            oldSuggest.setTimes(oldSuggest.getTimes() + 1L);
+            suggestDao.update(oldSuggest);
         }
+
+        closeDB();
     }
 
-    private static void updateSuggest(Suggest sug) {
-        getSuggestDao().update(sug);
-    }
 
     public static String[] querySuggestLike(String str) {
-        QueryBuilder<Suggest> builder = getSuggestDao().queryBuilder();
-        List<Suggest> suggests = builder.where(SuggestDao.Properties.Name.like(str))
+        SuggestDao suggestDao = DaoManager.getInstance().getSuggestDao();
+
+        QueryBuilder<Suggest> builder = suggestDao.queryBuilder();
+        List<Suggest> suggests =
+                builder.where(SuggestDao.Properties.Name.like("%"+str+"%"))
                 .orderDesc(SuggestDao.Properties.Times)
                 .build().list();
         Log.d(TAG, "querySuggestLike: " + suggests.size());
         if (suggests.size() != 0) {
-            String[] strings = new String[suggests.size()];
+            String[] names = new String[suggests.size()];
             for (int i = 0; i < suggests.size(); i++) {
-                strings[i] = suggests.get(i).getName();
+                names[i] = suggests.get(i).getName();
             }
-            return strings;
+            closeDB();
+            return names;
         }
+        closeDB();
         return null;
     }
 
-    private static Suggest ifSuggestExists(String name) {
-        try {
-            QueryBuilder<Suggest> builder = getSuggestDao().queryBuilder();
-            return builder.where(SuggestDao.Properties.Name.eq(name)).unique();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
 

@@ -103,7 +103,7 @@ public class ReaderConActivity extends BaseActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             if(aBoolean){ //成功
-                startActivity(MyLibActivity.newIntent(ReaderConActivity.this,null));
+                startActivity(MyLibActivity.newIntent(ReaderConActivity.this));
                 finish();
             }else{
                 new MaterialDialog.Builder(ReaderConActivity.this)

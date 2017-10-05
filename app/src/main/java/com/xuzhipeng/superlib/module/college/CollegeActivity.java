@@ -108,7 +108,7 @@ public class CollegeActivity extends BaseActivity {
                                 public void onClick(@android.support.annotation.NonNull MaterialDialog dialog, @android.support.annotation.NonNull DialogAction which) {
                                     PrefUtil.setBaseUrl(CollegeActivity.this,item.base);
                                     startActivity(new Intent(CollegeActivity.this, MainActivity.class));
-//                                    PrefUtil.setFirstStart(CollegeActivity.this,false);
+                                    PrefUtil.setFirstStart(CollegeActivity.this,false);
                                     finish();
                                 }
                             }).onNegative(new MaterialDialog.SingleButtonCallback() {

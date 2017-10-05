@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical"
+              xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/renew_captcha_iv"
+        android:layout_width="200dp"
+        android:scaleType="centerCrop"
+        android:layout_height="80dp"
+        tools:ignore="contentDescription"/>
+
+    <EditText
+        android:id="@+id/renew_captcha_et"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:inputType="text"/>
+
+    <Button
+        android:id="@+id/renew_captcha_btn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"/>
+
+</LinearLayout>

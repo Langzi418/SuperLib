@@ -17,13 +17,8 @@ public class MyFragmentPagerAdapter extends FragmentPagerItemAdapter {
         super(fm, pages);
     }
 
-    @Override
-    public int getItemPosition(Object object) {
-        return POSITION_NONE;
-    }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        super.destroyItem(container, position, object);
     }
 }

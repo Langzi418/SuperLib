@@ -3,7 +3,7 @@ apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.xuzhipeng.superlib"
         minSdkVersion 17
@@ -23,7 +23,7 @@ android {
 }
 
 greendao {
-    schemaVersion 1
+    schemaVersion 3
     daoPackage 'com.xuzhipeng.superlib.db'// 设置DaoMaster、DaoSession、Dao 包名
     targetGenDir 'src/main/java' //设置DaoMaster、DaoSession、Dao目录
 }
@@ -59,6 +59,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.0.1'
     compile 'com.android.support:cardview-v7:26.0.1'
     compile 'com.google.code.gson:gson:2.8.2'
-    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+    compile 'com.zhy:okhttputils:2.6.2'
     testCompile 'junit:junit:4.12'
 }

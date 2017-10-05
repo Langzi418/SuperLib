@@ -22,24 +22,20 @@
     <string name="desc">降序</string>
     <string name="asc">升序</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hot_search">热门检索</string>
     <string name="hot_book">热门图书</string>
     <string name="previous_page">上一页</string>
     <string name="next_page">下一页</string>
     <string name="search_result">搜索结果</string>
     <string name="book_status">书籍状态</string>
-    <string name="school_comment">校内评论</string>
     <string name="search">检索条件</string>
     <string name="mine">我的</string>
     <string name="my_lib">我的图书馆</string>
     <string name="collection">我的收藏</string>
     <string name="no_data">暂无数据</string>
     <string name="dou_ban_comment">豆瓣评论</string>
-    <string name="student_no">学号</string>
     <string name="password">密码</string>
     <string name="login">登录</string>
-    <string name="zjxx">证件信息</string>
     <string name="dqjy">当前借阅</string>
     <string name="jyls">借阅历史</string>
     <string name="click_login">请点击登录</string>
@@ -52,12 +48,6 @@
     <string name="notice_detail">公告详情</string>
     <string name="page_views">浏览量 %1$s</string>
     <string name="renew">续借</string>
-    <string name="renew_hint">
-         "%1$s\n\n
-        友情提示：\n
-        最大提前续借天数：15\n
-        最大网上续借量：1"
-    </string>
     <string name="lend_date">借书日期：%1$s</string>
     <string name="return_date">还书日期： %1$s</string>
     <string name="comment_detail">评论详情</string>
@@ -92,4 +82,9 @@
     <string name="cert_no">证件号</string>
     <string name="bar_no">条码号</string>
     <string name="email">Email</string>
+    <string name="captcha">验证码</string>
+    <string name="click_captcha">点击获取验证码</string>
+    <string name="reset_captcha">重新获取验证码</string>
+    <string name="login_invalid">您的登录信息已失效，请重新登录。</string>
+    <string name="please_captcha">请输入验证码</string>
 </resources>

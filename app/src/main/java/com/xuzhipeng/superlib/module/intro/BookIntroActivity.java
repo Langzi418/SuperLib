@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xuzhipeng.superlib.R;
 import com.xuzhipeng.superlib.base.BaseActivity;
 import com.xuzhipeng.superlib.common.util.NetWorkUtil;
+import com.xuzhipeng.superlib.common.util.ViewUtil;
 import com.xuzhipeng.superlib.model.BookIntro;
 import com.xuzhipeng.superlib.module.adapter.BookIntroAdapter;
 import com.xuzhipeng.superlib.module.info.BookInfoActivity;
@@ -57,11 +58,11 @@ public class BookIntroActivity extends BaseActivity implements IBookIntroView, V
 
     @Override
     protected void initView() {
-        mBookTotalTv =  findViewById(R.id.book_total_tv);
-        mBooksRecyclerView =  findViewById(R.id.books_recycler_view);
-        mPreviousBtn =  findViewById(R.id.previous_btn);
-        mPageNumTv =  findViewById(R.id.page_num_tv);
-        mNextBtn =  findViewById(R.id.next_btn);
+        mBookTotalTv = findViewById(R.id.book_total_tv);
+        mBooksRecyclerView = findViewById(R.id.books_recycler_view);
+        mPreviousBtn = findViewById(R.id.previous_btn);
+        mPageNumTv = findViewById(R.id.page_num_tv);
+        mNextBtn = findViewById(R.id.next_btn);
     }
 
     @Override
@@ -98,7 +99,7 @@ public class BookIntroActivity extends BaseActivity implements IBookIntroView, V
         mPresenter = new BookIntroPresenter(this);
         mCurPg = 1; //初始页为 1
 
-        if(!NetWorkUtil.isNetworkConnected(this)){
+        if (!NetWorkUtil.isNetworkConnected(this)) {
             return;
         }
 
@@ -131,21 +132,19 @@ public class BookIntroActivity extends BaseActivity implements IBookIntroView, V
     }
 
     /**
-     *  搜索无果，退出
+     * 搜索无果，退出
      */
     private void showDialogFinish() {
-        new MaterialDialog.Builder(this)
-                .content(R.string.no_result)
-                .positiveText(R.string.ok)
-                .positiveColorRes(R.color.colorPrimary)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        BookIntroActivity.this.finish();
-                    }
-                })
-                .cancelable(false)
-                .show();
+
+        MaterialDialog.Builder builder =
+                ViewUtil.showOneDialog(this, getString(R.string.no_result));
+
+        builder.onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                BookIntroActivity.this.finish();
+            }
+        }).build().show();
     }
 
     @Override
@@ -201,7 +200,7 @@ public class BookIntroActivity extends BaseActivity implements IBookIntroView, V
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mPresenter != null){
+        if (mPresenter != null) {
             mPresenter.detachView();
         }
     }

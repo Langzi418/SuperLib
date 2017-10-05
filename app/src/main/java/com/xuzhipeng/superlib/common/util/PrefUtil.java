@@ -31,15 +31,13 @@ public class PrefUtil {
     //用于登录
     private static final String PREF_USER_NO = "userNo";
     private static final String PREF_PASSWORD = "password";
-    private static final String PREF_LOGIN_WAY = "select";
 
-    private static final String PREF_USER_NAME = "username";
 
     //用于查找用户收藏资料
     private static final String PREF_USER_ID = "userId";
 
     //首次登录
-    private static final String PERF_FIRST_START = "isFirstStart";
+    private static final String PREF_FIRST_START = "isFirstStart";
 
     public static String getUserNo(Context context) {
         return getPreferences(context)
@@ -92,17 +90,6 @@ public class PrefUtil {
                 .apply();
     }
 
-    public static String getUserName(Context context) {
-        return getPreferences(context)
-                .getString(PREF_USER_NAME, null);
-    }
-
-    public static void setUserName(Context context, String username) {
-        getPreferences(context)
-                .edit()
-                .putString(PREF_USER_NAME, username)
-                .apply();
-    }
 
 
     public static String getBaseUrl(Context context) {
@@ -119,22 +106,13 @@ public class PrefUtil {
 
     public static Boolean getFirstStart(Context context){
         //默认第一次启动
-        return getPreferences(context).getBoolean(PERF_FIRST_START,true);
+        return getPreferences(context).getBoolean(PREF_FIRST_START,true);
     }
 
     public static void setFirstStart(Context context,Boolean isFirst){
         getPreferences(context)
                 .edit()
-                .putBoolean(PERF_FIRST_START,isFirst).apply();
+                .putBoolean(PREF_FIRST_START,isFirst).apply();
     }
 
-    public static String getLoginWay(Context context){
-        return getPreferences(context).getString(PREF_LOGIN_WAY,null);
-    }
-
-    public static void setLoginWay(Context context,String select){
-        getPreferences(context)
-                .edit()
-                .putString(PREF_LOGIN_WAY,select).apply();
-    }
 }

@@ -1,6 +1,7 @@
 package com.xuzhipeng.superlib.db;
 
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Unique;
 import org.greenrobot.greendao.annotation.Generated;
 
@@ -17,12 +18,13 @@ public class Suggest {
     private Long Id;
 
     @Unique
+    @NotNull
     private String name;
 
     private Long times;
 
-    @Generated(hash = 764937576)
-    public Suggest(Long Id, String name, Long times) {
+    @Generated(hash = 1489203012)
+    public Suggest(Long Id, @NotNull String name, Long times) {
         this.Id = Id;
         this.name = name;
         this.times = times;

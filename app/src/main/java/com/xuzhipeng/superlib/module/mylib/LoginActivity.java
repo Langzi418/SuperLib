@@ -2,8 +2,12 @@ package com.xuzhipeng.superlib.module.mylib;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -44,6 +48,8 @@ public class LoginActivity extends BaseActivity {
     private RadioButton mBarNoRb;
     private RadioButton mEmailRb;
     private Login login;
+    private EditText mInputCaptcha;
+    private Button mCaptchaBtn;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, LoginActivity.class);
@@ -64,16 +70,83 @@ public class LoginActivity extends BaseActivity {
         mCertNoRb = findViewById(R.id.cert_no_rb);
         mBarNoRb = findViewById(R.id.bar_no_rb);
         mEmailRb = findViewById(R.id.email_rb);
+        mInputCaptcha =  findViewById(R.id.input_captcha);
+        mCaptchaBtn =  findViewById(R.id.captcha_btn);
     }
 
     @Override
     protected void setListener() {
+
+        /**
+         * 验证码
+         */
+        mCaptchaBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final String code = mInputUser.getText().toString();
+                Observable.create(new ObservableOnSubscribe<Bitmap>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<Bitmap> e) throws Exception {
+                        Bitmap bitmap = mLib.getCaptcha(code);
+                        if(bitmap !=null){
+                            e.onNext(bitmap);
+                        }
+                        e.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Bitmap>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Bitmap bitmap) {
+                        mCaptchaBtn.setText("");
+                        mCaptchaBtn.setBackground(
+                                new BitmapDrawable(LoginActivity.this.getResources(),bitmap));
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+            }
+        });
+
+
+        /**
+         * 登录
+         */
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String name = mInputUser.getText().toString();
+                final String userNo = mInputUser.getText().toString();
                 final String pwd = mInputPassword.getText().toString();
-                getCheck(name, pwd);
+                final String captcha = mInputCaptcha.getText().toString();
+
+                final String select;
+                //验证方式
+                if (mBarNoRb.getVisibility() == View.VISIBLE && mBarNoRb.isChecked()) {
+                    select = "bar_no";
+                } else if (mCertNoRb.getVisibility() == View.VISIBLE && mCertNoRb.isChecked()) {
+                    select = "cert_no";
+                } else if (mEmailRb.getVisibility() == View.VISIBLE && mEmailRb.isChecked()) {
+                    select = "email";
+                } else if (login.select.equals("cert_no") || login.select.equals("bar_no")
+                        || login.select.equals("email")) { //默认的方式
+                    select = login.select;
+                } else {
+                    //实在没有
+                    select = "bar_no";
+                }
+
+                getCheck(userNo, pwd,captcha,select);
             }
         });
     }
@@ -155,7 +228,7 @@ public class LoginActivity extends BaseActivity {
                         }
                         if (!login.barNo) {
                             mBarNoRb.setVisibility(View.GONE);
-                        }
+                    }
                         if (!login.email) {
                             mEmailRb.setVisibility(View.GONE);
                         }
@@ -174,12 +247,10 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
                     }
 
                     @Override
                     public void onComplete() {
-
                     }
                 });
     }
@@ -188,33 +259,17 @@ public class LoginActivity extends BaseActivity {
     /**
      * 登陆验证
      */
-    private void getCheck(final String name, final String pwd) {
+    private void getCheck(final String name, final String pwd,
+                          final String captcha,final String select) {
         if (!NetWorkUtil.isNetworkConnected(this)) {
             return;
-        }
-
-        final String select;
-        //验证方式
-        if (mBarNoRb.getVisibility() == View.VISIBLE && mBarNoRb.isChecked()) {
-            select = "bar_no";
-        } else if (mCertNoRb.getVisibility() == View.VISIBLE && mCertNoRb.isChecked()) {
-            select = "cert_no";
-        } else if (mEmailRb.getVisibility() == View.VISIBLE && mEmailRb.isChecked()) {
-            select = "email";
-        } else if (login.select.equals("cert_no") || login.select.equals("bar_no")
-                || login.select.equals("email")) { //默认的方式
-            select = login.select;
-        } else {
-            //实在没有
-            select = "bar_no";
         }
 
         try {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
-                    final String info = mLib.checkLogin(name, pwd, select);
+                    final String info = mLib.checkLogin(name, pwd, captcha,select);
                     if (info == null) {
                         return;
                     }
@@ -236,7 +291,7 @@ public class LoginActivity extends BaseActivity {
                         }
 
                         //不需要认证
-                        startActivity(MyLibActivity.newIntent(LoginActivity.this, info));
+                        startActivity(MyLibActivity.newIntent(LoginActivity.this));
                         finish();
                     } else {
                         final Elements trs = ele.select("tr");  //登陆失败信息
@@ -244,6 +299,10 @@ public class LoginActivity extends BaseActivity {
                             @Override
                             public void run() {
                                 mLoginFailTv.setText(trs.last().text());
+                                mCaptchaBtn.setText(R.string.reset_captcha);
+                                mCaptchaBtn.setBackground(
+                                        ContextCompat.getDrawable
+                                                (LoginActivity.this,R.drawable.default_btn_bg));
                             }
                         });
                     }
@@ -253,5 +312,4 @@ public class LoginActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
 }

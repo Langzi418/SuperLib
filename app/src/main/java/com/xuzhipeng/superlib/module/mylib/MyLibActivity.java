@@ -2,7 +2,6 @@ package com.xuzhipeng.superlib.module.mylib;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,16 +18,9 @@ import com.xuzhipeng.superlib.common.util.ViewUtil;
 
 public class MyLibActivity extends BaseActivity {
 
-    private static final String EXTRA_HTML = "HTML";
-    private static final String BUNDLE_HTML = "html";
-    private String mHtml;
-
-    public static Intent newIntent(Context context, String htmlCon) {
-        Intent intent = new Intent(context, MyLibActivity.class);
-        intent.putExtra(EXTRA_HTML, htmlCon);
-        return intent;
+    public static Intent newIntent(Context context) {
+        return new Intent(context,MyLibActivity.class);
     }
-
 
     @Override
     protected int getLayoutId() {
@@ -41,20 +33,12 @@ public class MyLibActivity extends BaseActivity {
     }
 
     @Override
-    protected void getExtra() {
-        mHtml = getIntent().getStringExtra(EXTRA_HTML);
-    }
-
-    @Override
     protected void setView() {
         setToolbar(R.string.my_lib);
-        Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_HTML,mHtml);
 
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(
                 getSupportFragmentManager(),
                 FragmentPagerItems.with(this)
-                        .add(R.string.zjxx, ZJXXFragment.class, bundle)
                         .add(R.string.dqjy, DQJYFragment.class)
                         .add(R.string.jyls, JYLSFragment.class)
                         .create()
@@ -74,19 +58,14 @@ public class MyLibActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.login_out:
-                new MaterialDialog.Builder(this)
-                        .content(R.string.check_log_out)
-                        .positiveText(R.string.ok)
-                        .positiveColorRes(R.color.green_light)
-                        .negativeText(R.string.give_up)
-                        .negativeColorRes(R.color.colorPrimary)
-                        .cancelable(false)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                MaterialDialog.Builder builder =
+                        ViewUtil.showTwoDialog(this,getString(R.string.check_log_out));
+
+                builder.onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull
                                     DialogAction which) {
                                 PrefUtil.setSuccess(MyLibActivity.this, false);
-                                PrefUtil.setUserName(MyLibActivity.this, null);
                                 PrefUtil.setUserNo(MyLibActivity.this, null);
                                 PrefUtil.setUserId(MyLibActivity.this, 0L);
                                 PrefUtil.setPwd(MyLibActivity.this, null);
@@ -100,8 +79,7 @@ public class MyLibActivity extends BaseActivity {
                                     DialogAction which) {
                                 dialog.dismiss();
                             }
-                        })
-                        .show();
+                        }).build().show();
                 break;
 
         }

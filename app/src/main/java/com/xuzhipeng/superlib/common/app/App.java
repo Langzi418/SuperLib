@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.xuzhipeng.superlib.common.NetWorkReceiver;
-import com.xuzhipeng.superlib.common.util.PrefUtil;
 
 
 /**
@@ -15,7 +14,6 @@ import com.xuzhipeng.superlib.common.util.PrefUtil;
 
 public class App extends Application {
 
-
     //全局上下文
     private static Context sContext;
 
@@ -24,7 +22,6 @@ public class App extends Application {
         super.onCreate();
 
         sContext = getApplicationContext();
-        PrefUtil.setBaseUrl(this,"http://opac.lib.wust.edu.cn:8080/");
         NetWorkReceiver.registerNet(this);
     }
 
@@ -38,7 +35,4 @@ public class App extends Application {
         return sContext;
     }
 
-    public static String getBaseUrl(){
-        return PrefUtil.getBaseUrl(getContext());
-    }
 }

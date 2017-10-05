@@ -19,7 +19,7 @@ import com.allenliu.versionchecklib.core.VersionParams;
 public class UpdateUtil {
 
     public static final String URL_UPDATE
-            = "http://101.132.121.229/update.txt";
+            = "http://101.132.121.229/superlib_update.txt";
 
     private static PackageManager pm;
 

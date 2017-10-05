@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +33,14 @@ import com.xuzhipeng.superlib.module.mylib.MyLibActivity;
 import com.xuzhipeng.superlib.module.update.UpdateActivity;
 import com.xuzhipeng.superlib.module.update.UpdateUtil;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
@@ -46,7 +53,6 @@ public class MainActivity extends BaseActivity {
     private Spinner mDisplaySpinner;
     private Spinner mSortSpinner;
     private Spinner mAscDesSpinner;
-    private String mQuery;
     private MyFragmentPagerAdapter mAdapter;
 
     @Override
@@ -60,15 +66,15 @@ public class MainActivity extends BaseActivity {
         UpdateUtil.update(this);
 
         mDrawerLayout = findViewById(R.id.draw_layout);
-        mSearchView =  findViewById(R.id.search_view);
-        mNavView =  findViewById(R.id.nav_view);
+        mSearchView = findViewById(R.id.search_view);
+        mNavView = findViewById(R.id.nav_view);
         View headerView = mNavView.getHeaderView(0);
-        mUserTv =  headerView.findViewById(R.id.user_info_tv);
+        mUserTv = headerView.findViewById(R.id.user_info_tv);
 
-        mSearchTypeSpinner =  findViewById(R.id.search_type_spinner);
+        mSearchTypeSpinner = findViewById(R.id.search_type_spinner);
         mDocTypeSpinner = findViewById(R.id.doc_type_spinner);
-        mDisplaySpinner =  findViewById(R.id.display_spinner);
-        mSortSpinner =  findViewById(R.id.sort_spinner);
+        mDisplaySpinner = findViewById(R.id.display_spinner);
+        mSortSpinner = findViewById(R.id.sort_spinner);
         mAscDesSpinner = findViewById(R.id.asc_or_des_spinner);
     }
 
@@ -99,24 +105,32 @@ public class MainActivity extends BaseActivity {
          */
         mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(final String query) {
 
                 if (TextUtils.isEmpty(query)) {
-                    Toast.makeText(MainActivity.this, R.string.no_content, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.no_content, Toast.LENGTH_SHORT)
+                            .show();
                     return true;
                 }
-                mQuery = query;
-                goSearch(mQuery);
+
+                //插入搜索记录
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DBUtil.insertSuggest(query);
+                    }
+                }).start();
+
+                goSearch(query);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(final String newText) {
                 getSuggest(newText);
                 return false;
             }
         });
-
 
 
         /**
@@ -151,15 +165,6 @@ public class MainActivity extends BaseActivity {
         });
 
 
-        /**
-         *  用户信息点击
-         */
-        mUserTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goIfLogin();
-            }
-        });
     }
 
     /**
@@ -180,27 +185,43 @@ public class MainActivity extends BaseActivity {
     /**
      * 从数据库中得到数据
      */
-    private void getSuggest(String newText) {
-        Log.d(TAG, "getSuggest: ");
-        final String[] strings = DBUtil.querySuggestLike(newText);
-        if (strings != null) {
-            Log.d(TAG, "getSuggest: ");
-            mSearchView.setSuggestions(strings);
-            for (int i = 0; i < strings.length; i++) {
-                Log.d(TAG, "getSuggest: " + strings[i]);
-            }
-            mSearchView.showSuggestions();
-            mSearchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        goSearch((String) parent.getItemAtPosition(position));
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
+    private void getSuggest(final String newText) {
+        Observable.create(new ObservableOnSubscribe<String[]>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<String[]> e) throws Exception {
+                String[] names = DBUtil.querySuggestLike(newText);
+                if (names != null && names.length > 0) {
+                    e.onNext(names);
                 }
-            });
-        }
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String[]>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(@NonNull final String[] strings) {
+                        mSearchView.setSuggestions(strings);
+                        mSearchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int
+                                    position, long id) {
+                                goSearch(strings[position]);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
     }
 
 
@@ -209,7 +230,7 @@ public class MainActivity extends BaseActivity {
      */
     private void goIfLogin() {
         if (PrefUtil.getSuccess(MainActivity.this)) {
-            startActivity(MyLibActivity.newIntent(MainActivity.this, null));
+            startActivity(MyLibActivity.newIntent(MainActivity.this));
         } else {
             startActivity(LoginActivity.newIntent(MainActivity.this));
         }
@@ -222,22 +243,14 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (PrefUtil.getSuccess(this)) {
-            mUserTv.setText(PrefUtil.getUserName(this));
-        } else {
-            mUserTv.setText(R.string.click_login);
+        String userNo = PrefUtil.getUserNo(this);
+        if (userNo != null) {
+            mUserTv.setText(userNo);
+        }else{
+            mUserTv.setText(null);
         }
     }
 
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (!TextUtils.isEmpty(mQuery)) {
-            DBUtil.insertSuggest(mQuery);
-            DBUtil.closeDB();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -259,7 +272,7 @@ public class MainActivity extends BaseActivity {
 
 
     /**
-     *  切换学校返回
+     * 切换学校返回
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

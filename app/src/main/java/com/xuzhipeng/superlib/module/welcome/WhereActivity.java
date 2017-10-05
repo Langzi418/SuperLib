@@ -16,7 +16,6 @@ public class WhereActivity extends AppCompatActivity {
         if(PrefUtil.getFirstStart(this)){
             startActivity(CollegeActivity.newIntent(this));
             finish();
-            return;
         }
 
     }

@@ -44,19 +44,11 @@ public class ViewUtil {
     /**
      *  弹出确认对话框
      */
-    public static void showDialog(Context context,String content){
-        new MaterialDialog.Builder(context)
+    public static MaterialDialog.Builder showOneDialog(Context context, String content){
+        return new  MaterialDialog.Builder(context)
                 .content(content)
                 .cancelable(false)
-                .positiveText(R.string.ok)
-                .positiveColorRes(R.color.colorPrimary)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+                .positiveText(R.string.ok);
     }
 
 

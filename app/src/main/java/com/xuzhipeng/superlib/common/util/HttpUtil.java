@@ -15,11 +15,11 @@ import okhttp3.Response;
  */
 
 public class HttpUtil {
-    private static OkHttpClient client;
+    private volatile static OkHttpClient client;
 
     private static OkHttpClient getClient(){
         if(client == null){
-            synchronized (OkHttpClient.class){
+            synchronized (HttpUtil.class){
                 if(client == null){
                     client = new OkHttpClient
                             .Builder()

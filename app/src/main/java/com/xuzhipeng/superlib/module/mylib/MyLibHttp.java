@@ -1,14 +1,13 @@
 package com.xuzhipeng.superlib.module.mylib;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 
-import com.franmontiel.persistentcookiejar.ClearableCookieJar;
-import com.franmontiel.persistentcookiejar.PersistentCookieJar;
-import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
-import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.xuzhipeng.superlib.address.Address;
-import com.xuzhipeng.superlib.common.util.PrefUtil;
+import com.zhy.http.okhttp.cookie.CookieJarImpl;
+import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,20 +30,16 @@ import okhttp3.Response;
 public class MyLibHttp {
 
     private static final String TAG = "MyLibHttp";
-
-
-    private static MyLibHttp sLib;
+    private volatile static MyLibHttp sLib;
     private OkHttpClient mClient;
-    private static Context mContext;
 
     private MyLibHttp(Context context) {
-        ClearableCookieJar cookieJar =
-                new PersistentCookieJar(
-                        new SetCookieCache(), new SharedPrefsCookiePersistor(context));
+        CookieJarImpl cookieJar =
+                new CookieJarImpl(new PersistentCookieStore(context.getApplicationContext()));
 
-        mClient = new OkHttpClient.Builder()
-                .cookieJar(cookieJar)
-                .build();
+            mClient = new OkHttpClient.Builder()
+                    .cookieJar(cookieJar)
+                    .build();
 
     }
 
@@ -56,7 +51,6 @@ public class MyLibHttp {
                 }
             }
         }
-        mContext = context;
         return sLib;
     }
 
@@ -84,13 +78,13 @@ public class MyLibHttp {
     /**
      * 验证登录
      */
-    public String checkLogin(String username, String password, String select) {
-        //用于以后登录
-        PrefUtil.setLoginWay(mContext, select);
+    public String checkLogin(String userNo, String password
+            ,String captcha, String select) {
 
         RequestBody requestBody = new FormBody.Builder()
-                .add("number", username)
+                .add("number", userNo)
                 .add("passwd", password)
+                .add("captcha",captcha)
                 .add("select", select)
                 .build();
 
@@ -108,6 +102,43 @@ public class MyLibHttp {
         return null;
 
     }
+
+
+    /**
+     * @param userNo 用户名得到验证码
+     */
+    public Bitmap getCaptcha(String userNo) {
+        String url = Uri.parse(Address.getCaptcha()).buildUpon()
+                .appendQueryParameter("code", userNo)
+                .build().toString();
+        return getHttpBitmap(url);
+    }
+
+
+    /**
+     *  得到续借验证码
+     */
+    public Bitmap getCaptcha(){
+        String url = Address.getCaptcha();
+        return getHttpBitmap(url);
+    }
+
+    /**
+     *  返回网络bitmap
+     */
+    private Bitmap getHttpBitmap(String url) {
+        Request request = new Request.Builder().url(url).build();
+        try {
+            Response response = mClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return BitmapFactory.decodeStream(response.body().byteStream());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
     /**
@@ -141,20 +172,6 @@ public class MyLibHttp {
         return false;
     }
 
-    public String loadZJXX() {
-
-        //再次加载，证件信息，重新登录
-        String username = PrefUtil.getUserNo(mContext);
-        String pwd = PrefUtil.getPwd(mContext);
-
-        if (username != null && pwd != null) {
-            String select = PrefUtil.getLoginWay(mContext);
-            return checkLogin(username, pwd, select);
-        }
-
-        return null;
-    }
-
 
     public String loadDQJY() {
         try {
@@ -179,10 +196,11 @@ public class MyLibHttp {
         return null;
     }
 
-    public String loadRenew(String barNo, String checkNo) {
+    public String loadRenew(String barNo, String checkNo,String captcha) {
         String url = Uri.parse(Address.getRenew()).buildUpon()
                 .appendQueryParameter("bar_code", barNo)
                 .appendQueryParameter("check", checkNo)
+                .appendQueryParameter("captcha",captcha)
                 .appendQueryParameter("time", String.valueOf(System.currentTimeMillis()))
                 .build().toString();
         try {

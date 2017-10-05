@@ -1,14 +1,14 @@
 package com.xuzhipeng.superlib.db;
 
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.JoinEntity;
 import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.Unique;
 
 import java.util.List;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
 
 /**
  * Author: xuzhipeng
@@ -25,7 +25,6 @@ public class User {
 
     @Unique
     private String stuId;
-    private String name;
 
     //多对多
     @ToMany
@@ -44,11 +43,10 @@ public class User {
     @Generated(hash = 1507654846)
     private transient UserDao myDao;
 
-    @Generated(hash = 2085563445)
-    public User(Long Id, String stuId, String name) {
+    @Generated(hash = 1585850807)
+    public User(Long Id, String stuId) {
         this.Id = Id;
         this.stuId = stuId;
-        this.name = name;
     }
 
     @Generated(hash = 586692638)
@@ -71,13 +69,6 @@ public class User {
         this.stuId = stuId;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     /**
      * To-many relationship, resolved on first access (and after reset).
