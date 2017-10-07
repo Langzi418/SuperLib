@@ -74,6 +74,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
                 if(html == null){
                     e.onNext(false);
                     e.onComplete();
+                    return;
                 }
 
                 JSONObject jsonObject = new JSONObject(html);

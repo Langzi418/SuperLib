@@ -28,11 +28,12 @@ public class UpdateService extends AVersionService {
 
     @Override
     public void onResponses(AVersionService service, String response) {
+        Log.d(TAG, "onResponses: " + response);
         if (response == null) {
+            stopSelf();
             return;
         }
 
-        Log.d(TAG, "onResponses: " + response);
         int clientVersion = UpdateUtil.getVersionCode(this);
         try {
             Update update = new Gson().fromJson(response, Update.class);
@@ -50,7 +51,4 @@ public class UpdateService extends AVersionService {
             e.printStackTrace();
         }
     }
-
-
-
 }

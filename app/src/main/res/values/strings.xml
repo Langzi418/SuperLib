@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">超级图书馆</string>
+    <string name="app_name">OPAC图书馆</string>
     <string name="load_data">加载中</string>
 
     <!--spinner-->

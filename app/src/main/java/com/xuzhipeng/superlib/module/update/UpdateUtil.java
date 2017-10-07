@@ -23,8 +23,8 @@ public class UpdateUtil {
 
     private static PackageManager pm;
 
-    private static PackageManager getPm(ContextWrapper wrapper){
-        if(pm == null){
+    private static PackageManager getPm(ContextWrapper wrapper) {
+        if (pm == null) {
             pm = wrapper.getPackageManager();
         }
 
@@ -32,26 +32,27 @@ public class UpdateUtil {
     }
 
     /**
-     *  检测更新
+     * 检测更新
      */
-    public static void update(Context context){
+    public static void update(Context context) {
         VersionParams.Builder builder = new VersionParams.Builder()
                 .setRequestUrl(URL_UPDATE)
                 .setDownloadAPKPath(Environment.getExternalStoragePublicDirectory
                         (Environment.DIRECTORY_DOWNLOADS).getPath())
+                .setPauseRequestTime(-1)
                 .setService(UpdateService.class);
         AllenChecker.startVersionCheck(context, builder.build());
     }
 
 
     /**
-     *  返回版本名
+     * 返回版本名
      */
-    public static String getVersionName(ContextWrapper wrapper){
+    public static String getVersionName(ContextWrapper wrapper) {
         PackageManager pm = getPm(wrapper);
         try {
-            PackageInfo info = pm.getPackageInfo(wrapper.getPackageName(),0);
-            return  info.versionName;
+            PackageInfo info = pm.getPackageInfo(wrapper.getPackageName(), 0);
+            return info.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -60,13 +61,13 @@ public class UpdateUtil {
 
 
     /**
-     *  返回版本号
+     * 返回版本号
      */
 
-    public static int getVersionCode(ContextWrapper wrapper){
+    public static int getVersionCode(ContextWrapper wrapper) {
         PackageManager pm = getPm(wrapper);
         try {
-            PackageInfo info = pm.getPackageInfo(wrapper.getPackageName(),0);
+            PackageInfo info = pm.getPackageInfo(wrapper.getPackageName(), 0);
             return info.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -74,8 +75,6 @@ public class UpdateUtil {
 
         return 0;
     }
-
-
 
 
 }
