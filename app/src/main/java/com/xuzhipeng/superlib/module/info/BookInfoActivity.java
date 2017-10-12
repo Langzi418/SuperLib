@@ -119,12 +119,10 @@ public class BookInfoActivity extends BaseActivity implements IBookInfoView {
     }
 
     @Override
-    protected void setStatusBar() {
-        StatusBarUtil.setTranslucentForImageView(this, mNeedOffsetView);
-    }
-
-    @Override
     protected void setView() {
+        //设置状态栏
+        StatusBarUtil.setTranslucentForImageView(this, mNeedOffsetView);
+
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -212,7 +210,7 @@ public class BookInfoActivity extends BaseActivity implements IBookInfoView {
      * 判断是否登录
      */
     private boolean isLogin() {
-        return PrefUtil.getSuccess(this);
+        return PrefUtil.getSuccess();
     }
 
     /**
@@ -248,7 +246,7 @@ public class BookInfoActivity extends BaseActivity implements IBookInfoView {
                 mBook.setImgUrl(mImgUrl);
                 mBook.setInfoUrl(mInfoUrl);
                 Long bookId = DBUtil.insertBook(mBook);
-                Long userId = PrefUtil.getUserId(this);
+                Long userId = PrefUtil.getUserId();
                 Collect collect = new Collect();
                 collect.setUserId(userId);
                 collect.setBookId(bookId);
@@ -258,7 +256,7 @@ public class BookInfoActivity extends BaseActivity implements IBookInfoView {
                 //book已经持久化
                 if (mCollect.getId() == null) {
                     mCollect.setBookId(mBook.getId());
-                    mCollect.setUserId(PrefUtil.getUserId(this));
+                    mCollect.setUserId(PrefUtil.getUserId());
                     mCollect.setLike(true);
                     DBUtil.insertCollect(mCollect);
                 } else {
@@ -333,7 +331,7 @@ public class BookInfoActivity extends BaseActivity implements IBookInfoView {
             mBook = book;
         }
 
-        mPresenter.loadIsCollect(PrefUtil.getUserId(this), mBook.getId());
+        mPresenter.loadIsCollect(PrefUtil.getUserId(), mBook.getId());
 
     }
 

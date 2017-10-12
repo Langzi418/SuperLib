@@ -43,7 +43,7 @@ public class BookIntroAdapter extends BaseQuickAdapter<BookIntro, BaseViewHolder
             int cnt = Integer.parseInt(cnts[cnts.length - 1]);
             if (cnt > 0) {
                 helper.setTextColor(R.id.loanable_tv,
-                        ContextCompat.getColor(mContext, R.color.green_light));
+                        ContextCompat.getColor(mContext, R.color.holo_green_light));
             } else {
                 helper.setTextColor(R.id.loanable_tv,
                         ContextCompat.getColor(mContext, R.color.secondary_text_dark));

@@ -17,6 +17,7 @@ import com.xuzhipeng.superlib.R;
 import com.xuzhipeng.superlib.base.BaseActivity;
 import com.xuzhipeng.superlib.common.util.NetWorkUtil;
 import com.xuzhipeng.superlib.common.util.PrefUtil;
+import com.xuzhipeng.superlib.common.util.ViewUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -106,18 +107,14 @@ public class ReaderConActivity extends BaseActivity implements View.OnClickListe
                 startActivity(MyLibActivity.newIntent(ReaderConActivity.this));
                 finish();
             }else{
-                new MaterialDialog.Builder(ReaderConActivity.this)
-                        .content(R.string.con_fail)
-                        .positiveText(R.string.ok)
-                        .positiveColorRes(R.color.green_light)
-                        .negativeText(R.string.give_up)
-                        .negativeColorRes(R.color.colorPrimary)
-                        .cancelable(false)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                Context context = ReaderConActivity.this;
+                MaterialDialog.Builder builder = ViewUtil.showTwoDialog(
+                        context, context.getString(R.string.con_fail));
+
+                builder.onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
-
                                 startActivity(LoginActivity.newIntent(ReaderConActivity.this));
                                 finish();
                             }
@@ -126,12 +123,12 @@ public class ReaderConActivity extends BaseActivity implements View.OnClickListe
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
-                                PrefUtil.setUserNo(ReaderConActivity.this,null); //放弃后清除数据
-                                PrefUtil.setPwd(ReaderConActivity.this,null);
+                                PrefUtil.setUserNo(null); //放弃后清除数据
+                                PrefUtil.setPwd(null);
                                 finish();
                             }
                         })
-                        .show();
+                        .build().show();
             }
         }
     }

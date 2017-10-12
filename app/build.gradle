@@ -33,7 +33,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'org.jsoup:jsoup:1.10.3'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'

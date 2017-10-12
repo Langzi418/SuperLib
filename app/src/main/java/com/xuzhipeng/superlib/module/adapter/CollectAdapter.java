@@ -4,11 +4,13 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
-import com.chad.library.adapter.base.BaseQuickAdapter;
+
+import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xuzhipeng.superlib.R;
 import com.xuzhipeng.superlib.common.util.ViewUtil;
 import com.xuzhipeng.superlib.db.Book;
+
 import java.util.List;
 
 /**
@@ -18,7 +20,7 @@ import java.util.List;
  * Desc:
  */
 
-public class CollectAdapter extends BaseQuickAdapter<Book,BaseViewHolder> {
+public class CollectAdapter extends BaseItemDraggableAdapter<Book, BaseViewHolder> {
 
     private Context mContext;
 

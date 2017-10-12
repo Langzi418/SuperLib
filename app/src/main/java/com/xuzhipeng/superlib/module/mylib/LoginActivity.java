@@ -279,8 +279,8 @@ public class LoginActivity extends BaseActivity {
 
                     if (ele.size() == 0) {
                         //已不在登陆界面,可能登录成功，也可能需要认证
-                        PrefUtil.setUserNo(LoginActivity.this, name);
-                        PrefUtil.setPwd(LoginActivity.this, pwd);
+                        PrefUtil.setUserNo(name);
+                        PrefUtil.setPwd(pwd);
 
                         Elements readCon = doc.select("div.mylib_con_con");
                         if (readCon.size() != 0) {

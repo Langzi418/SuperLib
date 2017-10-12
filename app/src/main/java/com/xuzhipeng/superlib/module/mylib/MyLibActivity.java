@@ -34,7 +34,7 @@ public class MyLibActivity extends BaseActivity {
 
     @Override
     protected void setView() {
-        setToolbar(R.string.my_lib);
+        ViewUtil.setToolbar(this, R.string.my_lib);
 
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(
                 getSupportFragmentManager(),
@@ -65,10 +65,10 @@ public class MyLibActivity extends BaseActivity {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull
                                     DialogAction which) {
-                                PrefUtil.setSuccess(MyLibActivity.this, false);
-                                PrefUtil.setUserNo(MyLibActivity.this, null);
-                                PrefUtil.setUserId(MyLibActivity.this, 0L);
-                                PrefUtil.setPwd(MyLibActivity.this, null);
+                                PrefUtil.setSuccess(false);
+                                PrefUtil.setUserNo(null);
+                                PrefUtil.setUserId(0L);
+                                PrefUtil.setPwd(null);
                                 dialog.dismiss();
                                 finish();
                             }

@@ -67,7 +67,7 @@ public class BookIntroActivity extends BaseActivity implements IBookIntroView, V
 
     @Override
     protected void setView() {
-        setToolbar(R.string.search_result);
+        ViewUtil.setToolbar(this, R.string.search_result);
         mAdapter = new BookIntroAdapter(R.layout.item_book_intro, null, this);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         mBooksRecyclerView.setLayoutManager(new LinearLayoutManager(this));

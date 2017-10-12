@@ -1,21 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/red_light</color>
-    <color name="colorPrimaryDark">@color/red_dark</color>
-    <color name="colorAccent">#FF4081</color>
-
-    <color name="red_dark">@android:color/holo_red_dark</color>
-    <color name="red_light">@android:color/holo_red_light</color>
 
     <color name="white">@android:color/white</color>
-
-    <color name="blue_light">@android:color/holo_blue_light</color>
-    <color name="green_light">@android:color/holo_green_light</color>
     <color name="secondary_text_dark">@android:color/secondary_text_dark</color>
-
     <color name="darker_gray">@android:color/darker_gray</color>
-
     <color name="white_bg">#e5eced</color>
 
+    <color name="red_light">@android:color/holo_red_light</color>
+    <color name="holo_green_light">@android:color/holo_green_light</color>
+    <color name="blue_light">@android:color/holo_blue_light</color>
     <color name="black">@android:color/black</color>
+
+
+    <!--theme color-->
+    <color name="pink">#fb7299</color>
+    <color name="pink_dark">#b85671</color>
+    <color name="pink_trans">#99f0486c</color>
+
+    <color name="blue">#2196F3</color>
+    <color name="blue_dark">#1565C0</color>
+    <color name="blue_trans">#B41A78C3</color>
+
+    <color name="purple">#673AB7</color>
+    <color name="purple_dark">#451b92</color>
+    <color name="purple_trans">#99673AB7</color>
+
+    <color name="green">#4CAF50</color>
+    <color name="green_dark">#2E7D32</color>
+    <color name="green_trans">#994CAF50</color>
+
+    <color name="green_light">#8BC34A</color>
+    <color name="green_light_dark">#558B2F</color>
+    <color name="green_light_trans">#998BC34A</color>
+
+    <color name="yellow">#FDD835</color>
+    <color name="yellow_dark">#FBC02D</color>
+    <color name="yellow_trans">#99FDD835</color>
+
+    <color name="orange">#FF9800</color>
+    <color name="orange_dark">#EF6C00</color>
+    <color name="orange_trans">#99FF9800</color>
+
+    <color name="red">#F44336</color>
+    <color name="red_dark">#C62828</color>
+    <color name="red_trans">#99F44336</color>
+
 </resources>

@@ -10,7 +10,7 @@
         android:id="@+id/view_pager_tab"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
         app:tl_indicator_color="@color/white"
         app:tl_indicator_height="4dp"
         app:tl_indicator_corner_radius="4dp"

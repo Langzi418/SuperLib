@@ -280,11 +280,11 @@ public class DQJYFragment extends LazyLoadFragment {
                                 mDQJYAdapter.setEmptyView(mEmptyView);
                             }
                             //登录成功
-                            PrefUtil.setSuccess(getActivity(), true);
+                            PrefUtil.setSuccess(true);
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    DBUtil.checkUserInsert(getActivity());
+                                    DBUtil.checkUserInsert();
                                 }
                             }).start();
                         }else{

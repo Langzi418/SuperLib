@@ -30,6 +30,7 @@ import com.xuzhipeng.superlib.module.home.HotSearchFragment;
 import com.xuzhipeng.superlib.module.intro.BookIntroActivity;
 import com.xuzhipeng.superlib.module.mylib.LoginActivity;
 import com.xuzhipeng.superlib.module.mylib.MyLibActivity;
+import com.xuzhipeng.superlib.module.theme.ThemeActivity;
 import com.xuzhipeng.superlib.module.update.UpdateActivity;
 import com.xuzhipeng.superlib.module.update.UpdateUtil;
 
@@ -80,7 +81,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setView() {
-        setToolbar(R.string.app_name, R.drawable.ic_menu);
+        ViewUtil.setToolbar(this, R.string.app_name, R.drawable.ic_menu);
         mAdapter = new MyFragmentPagerAdapter(
                 getSupportFragmentManager(),
                 FragmentPagerItems.with(this)
@@ -149,6 +150,9 @@ public class MainActivity extends BaseActivity {
                     case R.id.nav_change:
                         startActivity(LoginActivity.newIntent(MainActivity.this));
                         break;
+                    case R.id.nav_theme:
+                        startActivity(ThemeActivity.newIntent(MainActivity.this));
+                        break;
                     case R.id.nav_mylib:
                         goIfLogin();
                         break;
@@ -189,11 +193,13 @@ public class MainActivity extends BaseActivity {
         Observable.create(new ObservableOnSubscribe<String[]>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String[]> e) throws Exception {
-                String[] names = DBUtil.querySuggestLike(newText);
-                if (names != null && names.length > 0) {
-                    e.onNext(names);
+                if (!TextUtils.isEmpty(newText)) {
+                    String[] names = DBUtil.querySuggestLike(newText);
+                    if (names != null && names.length > 0) {
+                        e.onNext(names);
+                    }
+                    e.onComplete();
                 }
-                e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -205,11 +211,13 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onNext(@NonNull final String[] strings) {
                         mSearchView.setSuggestions(strings);
+
+                        mSearchView.showSuggestions();
                         mSearchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int
                                     position, long id) {
-                                goSearch(strings[position]);
+                                goSearch((String) parent.getItemAtPosition(position));
                             }
                         });
                     }
@@ -229,7 +237,7 @@ public class MainActivity extends BaseActivity {
      * 根据是否登录跳转
      */
     private void goIfLogin() {
-        if (PrefUtil.getSuccess(MainActivity.this)) {
+        if (PrefUtil.getSuccess()) {
             startActivity(MyLibActivity.newIntent(MainActivity.this));
         } else {
             startActivity(LoginActivity.newIntent(MainActivity.this));
@@ -243,7 +251,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String userNo = PrefUtil.getUserNo(this);
+        String userNo = PrefUtil.getUserNo();
         if (userNo != null) {
             mUserTv.setText(userNo);
         }else{

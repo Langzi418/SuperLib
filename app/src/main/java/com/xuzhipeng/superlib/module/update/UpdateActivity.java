@@ -12,6 +12,7 @@ import com.xuzhipeng.superlib.R;
 import com.xuzhipeng.superlib.base.BaseActivity;
 import com.xuzhipeng.superlib.common.util.HttpUtil;
 import com.xuzhipeng.superlib.common.util.NetWorkUtil;
+import com.xuzhipeng.superlib.common.util.ViewUtil;
 
 import org.json.JSONObject;
 
@@ -49,7 +50,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void setView() {
-        setToolbar(R.string.app_info);
+        ViewUtil.setToolbar(this, R.string.app_info);
         mVersionTv.setText(UpdateUtil.getVersionName(this));
     }
 

@@ -87,4 +87,8 @@
     <string name="reset_captcha">重新获取验证码</string>
     <string name="login_invalid">您的登录信息已失效，请重新登录。</string>
     <string name="please_captcha">请输入验证码</string>
+    <string name="theme">主题色</string>
+    <string name="diy">自定义</string>
+    <string name="opacity">透明度</string>
+    <string name="saturation">饱和度</string>
 </resources>

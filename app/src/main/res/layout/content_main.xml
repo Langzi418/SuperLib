@@ -4,7 +4,6 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-
     <FrameLayout
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
@@ -17,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </FrameLayout>
-
 
     <include
         layout="@layout/custom_top_tab"/>

@@ -12,6 +12,8 @@ import com.xuzhipeng.superlib.common.util.NetWorkUtil;
 
 public class NetWorkReceiver extends BroadcastReceiver {
 
+    private static boolean isRegistered;
+
     protected static class InstanceHolder {
         public static final NetWorkReceiver INSTANCE = new NetWorkReceiver();
     }
@@ -31,13 +33,17 @@ public class NetWorkReceiver extends BroadcastReceiver {
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         context.registerReceiver(InstanceHolder.INSTANCE, filter);
 
+        isRegistered = true;
     }
 
     /**
      * 取消注册
      */
     public static void unregisterNet(Context context) {
-        context.unregisterReceiver(InstanceHolder.INSTANCE);
+        if (isRegistered) {
+            context.unregisterReceiver(InstanceHolder.INSTANCE);
+            isRegistered = false;
+        }
     }
 
 

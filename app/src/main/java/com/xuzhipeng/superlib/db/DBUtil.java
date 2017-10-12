@@ -1,6 +1,5 @@
 package com.xuzhipeng.superlib.db;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.xuzhipeng.superlib.common.util.PrefUtil;
@@ -20,6 +19,7 @@ import java.util.List;
 public class DBUtil {
 
     private static final String TAG = "DBUtil";
+
     /**
      * 关闭数据库
      */
@@ -28,21 +28,22 @@ public class DBUtil {
     }
 
     //用户相关
+
     /**
      * 用户是否插入数据库
      */
-    public static void checkUserInsert(Context context) {
+    public static void checkUserInsert() {
         User user = null;
         UserDao userDao = DaoManager.getInstance().getUserDao();
         QueryBuilder<User> builder = userDao.queryBuilder();
-        String userNo = PrefUtil.getUserNo(context);
-        try{
+        String userNo = PrefUtil.getUserNo();
+        try {
             user = builder.where(UserDao.Properties.StuId.eq(userNo)).build().unique();
-        }catch (DaoException e){
+        } catch (DaoException e) {
             e.printStackTrace();
         }
 
-        if(user == null){
+        if (user == null) {
             //用户不存在
             user = new User();
             user.setStuId(userNo);
@@ -50,19 +51,18 @@ public class DBUtil {
         }
 
         //保存用户数据库id
-        PrefUtil.setUserId(context, user.getId());
+        PrefUtil.setUserId(user.getId());
         closeDB();
     }
-
 
 
     //书相关
     public static Book queryBookByIsbn(String isbn) {
         BookDao bookDao = DaoManager.getInstance().getBookDao();
         QueryBuilder<Book> builder = bookDao.queryBuilder();
-        try{
+        try {
             return builder.where(BookDao.Properties.Isbn.eq(isbn)).build().unique();
-        }catch (DaoException e){
+        } catch (DaoException e) {
             e.printStackTrace();
         }
         return null;
@@ -79,16 +79,14 @@ public class DBUtil {
     }
 
 
-
-
     //收藏相关
     public static Collect queryCollect(Long userId, Long bookId) {
         CollectDao collectDao = DaoManager.getInstance().getCollectDao();
         QueryBuilder<Collect> builder = collectDao.queryBuilder();
-        try{
+        try {
             return builder.where(CollectDao.Properties.UserId.eq(userId)
-                , CollectDao.Properties.BookId.eq(bookId)).build().unique();
-        }catch (DaoException e){
+                    , CollectDao.Properties.BookId.eq(bookId)).build().unique();
+        } catch (DaoException e) {
             e.printStackTrace();
         }
 
@@ -116,10 +114,26 @@ public class DBUtil {
         CollectDao collectDao = DaoManager.getInstance().getCollectDao();
         QueryBuilder<Collect> builder = collectDao.queryBuilder();
         return builder.where(CollectDao.Properties.UserId.eq(userId)
-        ,CollectDao.Properties.Like.eq(1)).build().list();
+                , CollectDao.Properties.Like.eq(1)).build().list();
     }
 
-
+    //根据书id取消收藏
+    public static void cancelCollect(Long userId, Long bookId) {
+        CollectDao collectDao = DaoManager.getInstance().getCollectDao();
+        QueryBuilder<Collect> builder = collectDao.queryBuilder();
+        try {
+            Collect collect = builder.where(CollectDao.Properties.UserId.eq(userId)
+                    , CollectDao.Properties.BookId.eq(bookId)).build().unique();
+            if (collect != null) {
+                collect.setLike(false);
+                updateCollect(collect);
+            }
+        } catch (DaoException e) {
+            e.printStackTrace();
+        } finally {
+            closeDB();
+        }
+    }
 
 
     //建议相关
@@ -128,7 +142,7 @@ public class DBUtil {
         Suggest oldSuggest = null;
         try {
             QueryBuilder<Suggest> builder = suggestDao.queryBuilder();
-            oldSuggest =  builder.where(SuggestDao.Properties.Name.eq(name)).unique();
+            oldSuggest = builder.where(SuggestDao.Properties.Name.eq(name)).unique();
         } catch (DaoException e) {
             e.printStackTrace();
         }
@@ -153,9 +167,9 @@ public class DBUtil {
 
         QueryBuilder<Suggest> builder = suggestDao.queryBuilder();
         List<Suggest> suggests =
-                builder.where(SuggestDao.Properties.Name.like("%"+str+"%"))
-                .orderDesc(SuggestDao.Properties.Times)
-                .build().list();
+                builder.where(SuggestDao.Properties.Name.like("%" + str + "%"))
+                        .orderDesc(SuggestDao.Properties.Times)
+                        .build().list();
         Log.d(TAG, "querySuggestLike: " + suggests.size());
         if (suggests.size() != 0) {
             String[] names = new String[suggests.size()];
@@ -168,8 +182,4 @@ public class DBUtil {
         closeDB();
         return null;
     }
-
-
-
-
 }

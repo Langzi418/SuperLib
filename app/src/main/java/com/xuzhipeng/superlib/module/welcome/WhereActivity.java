@@ -15,7 +15,7 @@ public class WhereActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //首次加载是否选择了学校
-        if(PrefUtil.getFirstStart(this)){
+        if (PrefUtil.getFirstStart()) {
             startActivity(CollegeActivity.newIntent(this));
         }else{
             startActivity(new Intent(this, MainActivity.class));

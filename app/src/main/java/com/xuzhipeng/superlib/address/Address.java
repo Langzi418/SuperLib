@@ -1,6 +1,5 @@
 package com.xuzhipeng.superlib.address;
 
-import com.xuzhipeng.superlib.common.app.App;
 import com.xuzhipeng.superlib.common.util.PrefUtil;
 
 /**
@@ -18,7 +17,7 @@ public class Address {
         if(base == null){
             synchronized (Address.class){
                 if(base == null) {
-                    base = PrefUtil.getBaseUrl(App.getContext());
+                    base = PrefUtil.getBaseUrl();
                 }
             }
         }

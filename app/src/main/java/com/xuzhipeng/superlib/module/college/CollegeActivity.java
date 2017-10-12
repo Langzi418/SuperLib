@@ -62,7 +62,7 @@ public class CollegeActivity extends BaseActivity {
 
     @Override
     protected void setView() {
-        setToolbarTitle(R.string.choose_college);
+        ViewUtil.setToolbarTitle(this, R.string.choose_college);
         mCollegeAdapter = new CollegeAdapter(null);
         mCollegeRv.setLayoutManager(new LinearLayoutManager(this));
         mCollegeRv.setAdapter(mCollegeAdapter);
@@ -106,9 +106,11 @@ public class CollegeActivity extends BaseActivity {
                             builder.onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@android.support.annotation.NonNull MaterialDialog dialog, @android.support.annotation.NonNull DialogAction which) {
-                                    PrefUtil.setBaseUrl(CollegeActivity.this,item.base);
-                                    startActivity(new Intent(CollegeActivity.this, MainActivity.class));
-                                    PrefUtil.setFirstStart(CollegeActivity.this,false);
+
+                                    PrefUtil.setBaseUrl(item.base);
+                                    startActivity(new Intent(CollegeActivity.this, MainActivity
+                                            .class));
+                                    PrefUtil.setFirstStart(false);
                                     finish();
                                 }
                             }).onNegative(new MaterialDialog.SingleButtonCallback() {

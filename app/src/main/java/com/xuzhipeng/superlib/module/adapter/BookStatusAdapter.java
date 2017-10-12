@@ -36,7 +36,7 @@ public class BookStatusAdapter extends BaseQuickAdapter<BookStatus, BaseViewHold
 
         if (item.getStatus().equals("可借")) {
             helper.setTextColor(R.id.book_status_tv,
-                    ContextCompat.getColor(mContext, R.color.green_light));
+                    ContextCompat.getColor(mContext, R.color.holo_green_light));
         } else {
             helper.setTextColor(R.id.book_status_tv,
                     ContextCompat.getColor(mContext, R.color.secondary_text_dark));
