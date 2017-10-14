@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OPAC图书馆</string>
+    <string name="app_name">大学图书馆</string>
     <string name="load_data">加载中</string>
 
     <!--spinner-->
@@ -39,7 +39,6 @@
     <string name="dqjy">当前借阅</string>
     <string name="jyls">借阅历史</string>
     <string name="click_login">请点击登录</string>
-    <string name="create_comment">新建评论</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="no_content">亲，只字未写！</string>
@@ -88,7 +87,5 @@
     <string name="login_invalid">您的登录信息已失效，请重新登录。</string>
     <string name="please_captcha">请输入验证码</string>
     <string name="theme">主题色</string>
-    <string name="diy">自定义</string>
-    <string name="opacity">透明度</string>
-    <string name="saturation">饱和度</string>
+    <string name="please_user_no">请输入账号</string>
 </resources>

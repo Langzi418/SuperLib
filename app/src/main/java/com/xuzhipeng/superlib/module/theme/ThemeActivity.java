@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -20,11 +19,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ThemeActivity extends BaseActivity {
-    private static final String TAG = "ThemeActivity";
     private static final String ARGS_OLD_THEME = "oldTheme";
+    private static final String ARGS_LATEST_THEME = "latestTheme";
     private RecyclerView mThemeRv;
     private ThemeAdapter mAdapter;
     private Integer[] mIntegers;
+
+    //最新的主题id
+    private int mLatestThemeId;
+    //进入ThemeActivity时的，themeId,用于返回逻辑
     private int mOldThemeId;
 
     public static Intent newIntent(Context context) {
@@ -43,15 +46,16 @@ public class ThemeActivity extends BaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putInt(ARGS_OLD_THEME, mOldThemeId);
+        outState.putInt(ARGS_LATEST_THEME, mLatestThemeId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void setView() {
         ViewUtil.setToolbar(this, R.string.theme);
 
-        //实例颜色
+        //示例颜色
         Integer[] colors = new Integer[]{
                 R.color.red, R.color.pink, R.color.blue, R.color.purple,
                 R.color.green, R.color.green_light, R.color.yellow, R.color.orange
@@ -69,11 +73,10 @@ public class ThemeActivity extends BaseActivity {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-                Log.d(TAG, "onItemClick: " + position);
-                if (position < mIntegers.length) {
+                //防止用户多次重复点击
+                if (position < mIntegers.length && mLatestThemeId != mIntegers[position]) {
                     PrefUtil.setThemeId(mIntegers[position]);
-
+                    mLatestThemeId = mIntegers[position];
                     recreate();
                 }
             }
@@ -93,8 +96,10 @@ public class ThemeActivity extends BaseActivity {
     protected void restoreData(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             mOldThemeId = savedInstanceState.getInt(ARGS_OLD_THEME);
+            mLatestThemeId = savedInstanceState.getInt(ARGS_LATEST_THEME);
         } else {
             mOldThemeId = PrefUtil.getThemeId();
+            mLatestThemeId = mOldThemeId;
         }
     }
 
@@ -111,8 +116,7 @@ public class ThemeActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        int newThemeId = PrefUtil.getThemeId();
-        if (mOldThemeId != newThemeId) {
+        if (mOldThemeId != mLatestThemeId) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

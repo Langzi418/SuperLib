@@ -6,11 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xuzhipeng.superlib.R;
 import com.xuzhipeng.superlib.address.Address;
@@ -85,6 +87,13 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View view) {
 
                 final String code = mInputUser.getText().toString();
+                
+                if(TextUtils.isEmpty(code)){
+                    Toast.makeText(LoginActivity.this, R.string.please_user_no,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
                 Observable.create(new ObservableOnSubscribe<Bitmap>() {
                     @Override
                     public void subscribe(@NonNull ObservableEmitter<Bitmap> e) throws Exception {
