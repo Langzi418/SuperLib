@@ -24,17 +24,13 @@
 
 ### 图书检索
 
-![1555935804071](C:\Users\peng\AppData\Roaming\Typora\typora-user-images\1555935804071.png)
+![](https://ws1.sinaimg.cn/large/005wR1ytgy1g2bosdh9atj30fp0dbq4b.jpg)
 
 ### 图书信息
 
 这里调用了豆瓣评论API。
 
-![1555935875168](C:\Users\peng\AppData\Roaming\Typora\typora-user-images\1555935875168.png)
-
-
-
-![1555935901704](C:\Users\peng\AppData\Roaming\Typora\typora-user-images\1555935901704.png)
+![](https://ws1.sinaimg.cn/large/005wR1ytgy1g2bokj3ufdj30fo0cwdj3.jpg)![](https://ws1.sinaimg.cn/large/005wR1ytgy1g2bowkljlcj30ft0d8jtt.jpg)
 
 
 
@@ -52,7 +48,4 @@
 
 
 
-![1555936003646](C:\Users\peng\AppData\Roaming\Typora\typora-user-images\1555936003646.png)![](https://ws1.sinaimg.cn/large/005wR1ytgy1g2bonlagyej308v0chdgm.jpg)
-
-
-
+![](https://ws1.sinaimg.cn/large/005wR1ytgy1g2botw3y77j307x0c3dgb.jpg)![](https://ws1.sinaimg.cn/large/005wR1ytgy1g2bonlagyej308v0chdgm.jpg)
