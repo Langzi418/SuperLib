@@ -8,5 +8,5 @@
 
 ### 程序主界面
 
-![](https://ws1.sinaimg.cn/mw690/005wR1ytgy1g2bo67n8hej30u01hc76o.jpg)
+![](https://ws1.sinaimg.cn/thumbnail/005wR1ytgy1g2bo67n8hej30u01hc76o.jpg)
 
